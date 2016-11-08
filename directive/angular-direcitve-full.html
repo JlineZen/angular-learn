@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>anglar指令学习-一个完整的directive</title>
+</head>
+<body ng-app="App">
+	<script type="text/javascript" src="../lib/angular.min.js"></script>
+	<script type="text/javascript">
+		angular.module('App', [])
+			.directive('helloAngular', function() {
+				var directiveObj = {
+					priority: 0 //优先级
+					restrict: 'EA',
+					replace: true, //是否不显示自定义标签
+					template: '<div></div>', //模板
+					templateUrl: './index.html', //模板URL
+					transclude: false, //子directive是继承父级directive作用域
+					scope: false,  //是否独立作用域
+					compile: function compile(tElement, tAttrs, transclude) { 
+				 　　　　return { 
+				 　　　　　　pre: function preLink(scope, iElement, iAttrs, controller) { ... }, 
+				 　　　　　　post: function postLink(scope, iElement, iAttrs, controller) { ... } 
+				　　　　} 
+				  
+				　　}, 
+				 　 link: function postLink(scope, iElement, iAttrs) { ... } 
+				};
+
+				return directiveObj;
+			});
+	</script>
+</body>
+</html>

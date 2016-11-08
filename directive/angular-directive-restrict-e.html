@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>anglar指令学习-element</title>
+</head>
+<body ng-app="App">
+	<hello-angular></hello-angular>
+	<script type="text/javascript" src="../lib/angular.min.js"></script>
+	<script type="text/javascript">
+		angular.module('App', [])
+			.directive('helloAngular', function() {
+				return  {
+						restrict: 'E',
+						template: '<h1>Hello Angular</h1>',
+						replace: true
+					};
+				});
+	</script>
+</body>
+</html>
