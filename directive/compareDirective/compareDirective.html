@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app.compare">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../../style/bootstrap.css">
+	<title>自定义directive 两个model的比较</title>
+	<style type="text/css">
+		.mt40 {
+			margin-top: 40px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container mt40">
+		<form role="form" name="myForm" novalidate="" ng-submit="submitForm()">
+			<div class="form-group" ng-class="{'has-error':!myForm.userName.$valid}">
+				<label for="userName">User Name</label>
+			 	<input class="form-control" type="text" name="userName" placeholder="Enter something" required="" ng-model="UserName" />
+			 	<span class="help-block" ng-show="myForm.userName.$error.required">This is required.</span>
+			</div>
+		</form>
+	</div>
+	<script type="text/javascript" src="../../lib/angular.min.js"></script>
+	<script type="text/javascript" src="./compareDirective.js"></script>
+</body>
+</html>
