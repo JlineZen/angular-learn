@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="bjiang.zen">
+<head>
+	<meta charset="UTF-8">
+	<title>自定义指令</title>
+</head>
+<body>
+	<div ng-controller="modelCtrl as demo">
+	   <input type="text" ng-model="demo.text" text-transform="capitalize">
+		  <pre>{{demo.text | json }}</pre>	
+		  <button ng-click="demo.change();">change </button>
+	  </div>
+	<script type="text/javascript" src="../lib/angular.min.js"></script>
+	<script type="text/javascript">
+		angular.module('bjiang.zen', [])
+			.controller('modelCtrl', [function() {
+				var vm = this;
+				vm.text = 'aaa';
+				vm.change = function() {
+					vm.i = vm.i || 0;
+					vm.text = "" + (vm.i++);
+				};
+				return vm;
+			}])
+			.directive('textTransform', function() {
+				var transformConfig =  {
+					upperCase: function(input) {
+						return input.toUpperCase();
+					},
+					capitalize: function(input) {
+						return input.replace(/([a-zA-Z])([a-zA-Z])*/gi, function(matched, $1, $2) {
+							return $1.toUpperCase() + $2;
+						});
+					},
+					lowerCase: function(input) {
+						return input.toLowerCase();
+					}
+				};
+
+				return {
+					require: 'ngModel',
+					link: function(scope, element, attrs, modelCtrl) {
+						var transform = transformConfig[attrs.textTransform];
+						if (transform) {
+							modelCtrl.$parsers.push(function(input) {
+								return transform(input|| '');
+							});
+							modelCtrl.$formatters.push(function(a){
+							   console.log('invoke formater', a);
+							   return a;
+						   });
+			            	element.css("text-transform", attrs.textTransform);
+						}
+					}
+				}
+			});
+	</script>
+</body>
+</html>
