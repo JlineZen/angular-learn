@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="com.zzweb">
+<head>
+	<meta charset="UTF-8">
+	<title>directive隔离作用域&使用</title>
+	<script type="text/javascript" src="../lib/angular.min.js"></script>
+</head>
+<body>
+	<div ng-controller="demoCtrl">
+		<p>
+			<label>父级作用域：</label>
+			<input type="text" ng-model="name" />
+		</p>
+		<p isolated-directive action="action()"></p>
+		<p>=（attr属性只能是Function类型）： 独立作用域继承父级作用域的attr属性，通过调用方法可以改变以往的event思维来做通信处理</p>
+	</div>
+	<script type="text/javascript">
+		(function() {
+			'use strict';
+			angular.module('com.zzweb', [])
+				.controller('demoCtrl', ['$scope', function($scope) {
+					$scope.name = 'hello angular';
+					$scope.action = function() {
+						$scope.name = Math.random();
+					};
+				}])
+				.directive('isolatedDirective', function() {
+					return {
+						restrict: 'A',
+						scope: {
+							action: '&'
+						},
+						template: '<label>独立作用域：</label><input type="button" value="change" ng-click="action()" />'
+					}
+				});
+		}());
+	</script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="com.zzweb">
+<head>
+	<meta charset="UTF-8">
+	<title>angular directive scope的理解</title>
+</head>
+<body>
+	<div ng-controller="demoCtrl as vm">
+		<p>
+			<label>父作用域：</label>
+			<input type="text" ng-model="person" />
+		</p>
+		<hello-angular></hello-angular>
+		<hello-now></hello-now>
+	</div>
+	<script type="text/ng-template" id="helloAngular">
+		<p>
+			<label>子作用域(scope=false)：</label>
+			<input type="text" ng-model="person" />
+		</p>
+	</script>
+	<script type="text/ng-template" id="scopeTrue">
+		<p>
+			<label>子作用域(scope=true)：</label>
+			<input type="text" ng-model="person" />
+		</p>
+	</script>
+	<p>当scope选项为ture的时候，会创建一个子级作用域，子级作用域同时也继承父级作用域，继承父级的属性在父级属性改变的同时，子级作用域属性做相应的改变，但是子级作用域的改变在父级作用域不会体现。</p>
+	<script type="text/javascript" src="../lib/angular.min.js"></script>
+	<script type="text/javascript">
+		(function() {
+			'use strict';
+			angular.module('com.zzweb', [])
+				.controller('demoCtrl', ['$scope', function($scope) {
+					$scope.person='hello Angular';
+				}])
+				.directive('helloAngular', function() {
+					return {
+						restrict: 'E',
+						replace: true,
+						scope: false,
+						templateUrl: 'helloAngular',
+						link: function(scope, element, attr) {
+						}
+					}
+				})
+				.directive('helloNow', function() {
+					return {
+						restrict: 'E',
+						replace: true,
+						scope: true,
+						templateUrl: 'scopeTrue',
+						link: function(scope, element, attr) {
+						}
+					}
+				});
+		}());
+	</script>
+</body>
+</html>

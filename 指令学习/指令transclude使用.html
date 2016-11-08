@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="com.zzweb">
+    <head>
+        <meta charset="utf-8">
+            <title>
+                指令transclude的使用
+            </title>
+        </meta>
+    </head>
+    <body>
+        <p>
+            如果不想指令内部的内容被模板替换，则可以通过设置transclude为true。一般情况下，需要跟ng-transclude一起使用
+        </p>
+        <script src="../lib/angular.min.js" type="text/javascript">
+        </script>
+        <div sidebox="" title="Links">
+            <ul>
+                <li>
+                    First link
+                </li>
+                <li>
+                    Second link
+                </li>
+            </ul>
+        </div>
+    </body>
+    <script type="text/javascript">
+        var app = angular.module('com.zzweb', []); 
+		app.directive('sidebox', function() { 
+		 return { 
+		 	restrict: 'EA', 
+		 	scope: { 
+		  		title: '@' 
+		 	}, 
+		 	transclude: true, 
+		 	template: '<div class="sidebox"><div class="content"><h2 class="header">{{ title }}</h2><span class="content" ng-transclude></span></div></div>' 
+		 }; 
+		});
+    </script>
+</html>

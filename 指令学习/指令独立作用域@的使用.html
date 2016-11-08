@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="com.zzweb">
+<head>
+	<meta charset="UTF-8">
+	<title>directive隔离作用域@使用</title>
+	<script type="text/javascript" src="../lib/angular.min.js"></script>
+</head>
+<body>
+	<div ng-controller="demoCtrl">
+		<p>
+			<label>父级作用域：</label>
+			<input type="text" ng-model="name" />
+		</p>
+		<p isolated-directive name="{{name}}"></p>
+		<p>@（attr属性只能是string类型）：独立作用域继承父级作用域的name，通过directive的属性来通信，父级作用的绑定属性改变，则独立作用域的属性页跟着改变，但是独立作用域的属性改变，父级作用域不会改变。</p>
+	</div>
+	<script type="text/javascript">
+		(function() {
+			'use strict';
+			angular.module('com.zzweb', [])
+				.controller('demoCtrl', ['$scope', function($scope) {
+					$scope.name = 'Hello Angular';
+				}])
+				.directive('isolatedDirective', function() {
+					return {
+						restrict: 'A',
+						scope: {
+							name: '@'
+						},
+						template: '<label>独立作用域：</label><input type="text" ng-model="name" />'
+					}
+				});
+		}());
+	</script>
+</body>
+</html>
