@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="com.zzweb">
+<head>
+	<meta charset="UTF-8">
+	<title>directive中的link</title>
+	<script type="text/javascript" src="../lib/angular.min.js"></script>
+</head>
+<body>
+	<p>link函数是compile函数return的一个闭包函数</p>
+	<div autohello="5"><p ng-click="action()">小平你好！</p></div>
+	<script type="text/javascript">
+		(function() {
+			'use strict';
+			angular.module('com.zzweb', [])
+				.directive('autohello', function() {
+					return {
+						restrict: 'A',
+						compile: function(element, attrs, transclude) {
+							console.log(element);
+							var tpl = element.children().clone();
+							while (attrs.autohello--) {
+								element.append(tpl.clone());
+							}
+
+							return function(scope, element, attrs, controller) {
+								console.log(element);
+								scope.action = function() {
+									console.log(123);
+								};
+							}
+						}
+					}
+				});
+		}());
+	</script>
+</body>
+</html>
