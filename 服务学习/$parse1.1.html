@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>$parse服务学习</title>
+</head>
+<body>
+    <div ng-controller="ParseController">
+        <h1 ng-bind="ParseValue"></h1>
+    </div>
+    <script src="../lib/angular.min.js"></script>
+    <script>
+        angular.module('app', [])
+            .controller('ParseController', ['$parse', '$scope', function($parse, $scope) {
+                $scope.name = 'Angular';
+
+                var expression = "'Hello ' + name";
+
+                var parseFunc = $parse(expression);
+
+                console.log(parseFunc.literal);
+                console.log(parseFunc.constant);
+                console.log(parseFunc.assign);
+                console.log(parseFunc());
+
+                $scope.ParseValue = parseFunc($scope);
+            }]);
+    </script>
+</body>
+</html>
