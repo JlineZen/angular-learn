@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<script type="text/javascript" src="../../lib/angular.min.js"></script>
+	<title>自定义phoneDirective</title>
+</head>
+<body>
+	<form name="myForm">
+		<label for="phone">电话号码：</label>
+		<input phone-directive ng-model="phone" type="text" id="phone" name="phone" placeholder="Enter phone number..." maxlength="11" required />
+		<span ng-show="myForm.phone.$error.required">required</span>
+	</form>
+	<script type="text/javascript">
+		angular.module('com.zzweb', [])
+			.directive('phoneDirective', function() {
+				return {
+					require: 'ngModel',
+					restrict: 'A',
+					controller: function() {
+						this.wellDone = function() {
+							console.log('good job!');
+						}
+					},
+					link: function(scope, element, attrs, ngModelCtrl) {
+						
+					}
+				}
+			});
+
+		angular.element(document).ready(function() {
+			angular.bootstrap(document, ['com.zzweb']);
+		});
+	</script>
+</body>
+</html>
