@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<script src="../lib/angular.min.js"></script>
+	<title>angular 表单</title>
+	<style type="text/css">
+		.my-form {
+			transition: all linear .5s;
+			background: transparent;
+		}
+		.my-form.ng-invalid {
+			background: green;
+		}
+	</style>
+</head>
+<body ng-app="com.zzweb">
+	<form class="my-form" name="myForm" ng-controller="FormController as vm">
+		<label for="name">UserType：</label>
+		<input id="name" type="text" ng-model="vm.userType" name="name" required>
+		<span class="error" ng-show="myForm.name.$error.required">required!</span>
+	</form>
+	<script>
+		angular.module('com.zzweb', [])
+			.config(function($controllerProvider) {
+				$controllerProvider.register('FormController', [function() {
+					var vm = this;
+					vm.userType = 'Guest';
+					return vm;
+				}]);
+			});
+	</script>
+</body>
+</html>
