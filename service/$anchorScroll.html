@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>$anchorScroll服务的使用</title>
+    <script src="../lib/angular.min.js"></script>
+    <style type="text/css">
+        #scrollArea {
+            height: 200px;
+            overflow: auto;
+        }
+        
+        #bottom {
+            display: block;
+            margin-top: 2000px;
+        }
+    </style>
+</head>
+
+<body ng-app="com.zzweb">
+    <div id="scrollArea" ng-controller="scrollController">
+        <a href="javascript:void(0);" ng-click="goBottom();">Go to bottom</a>
+        <a href="javascript:void(0);" id="bottom">You are at the bottom</a>
+    </div>
+    <script>
+        angular.module('com.zzweb', [])
+            .controller('scrollController', ['$scope', '$anchorScroll', '$location', function($scope, $anchorScroll, $location) {
+                $scope.goBottom = function() {
+                    //将location.hash的值设置为你想要滚动的元素的id
+                    $location.hash('bottom');
+                    //调用 $anchorScroll
+                    $anchorScroll();
+                };
+            }])
+    </script>
+</body>
+
+</html>

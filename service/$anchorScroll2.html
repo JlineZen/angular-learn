@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>$anchorScroll服务</title>
+    <script src="../lib/angular.min.js"></script>
+    <style type="text/css">
+        body {
+            padding-top: 50px;
+        }
+        
+        .anchor {
+            border: 2px dashed DarkOrchid;
+            padding: 10px 10px 200px 10px;
+        }
+        
+        .fixed-header {
+            background-color: rgba(0, 0, 0, 0.2);
+            height: 50px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+        
+        .fixed-header>a {
+            display: inline-block;
+            margin: 5px 15px;
+        }
+    </style>
+</head>
+
+<body ng-app="com.zzweb">
+    <div class="fixed-header" ng-controller="headCtrl">
+        <a href="" ng-click="gotoAnchor(x);" ng-repeat="x in [1, 2, 3, 4, 5]">
+            Go to anchor {{x}}
+        </a>
+
+        <div id="anchor{{x}}" class="anchor" ng-repeat="x in [1, 2, 3, 4, 5]">
+            anchor {{x}} of 5
+        </div>
+    </div>
+    <script type="text/javascript">
+        angular.module('com.zzweb', [])
+            .run(['$anchorScroll', function($anchorScroll) {
+                //总是额外滚动50像素
+                $anchorScroll.yOffset = 50;
+            }])
+            .controller('headCtrl', ['$anchorScroll', '$location', '$scope', function($anchorScroll, $location, $scope) {
+                $scope.gotoAnchor = function(x) {
+                    var newHash = 'anchor' + x;
+                    if ($location.hash() !== newHash) {
+                        // 将$location.hash设置为'newHash',同时anchorScroll也将自动滚到此处
+                        $location.hash('anchor' + x);
+                    } else {
+                        // 显式地调用 $anchorScroll()方法 ,
+                        // 因为 $location.hash 并没有改变
+                        $anchorScroll();
+                    }
+                };
+            }]);
+    </script>
+</body>
+
+</html>
