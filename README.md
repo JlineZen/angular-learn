@@ -1,6 +1,9 @@
 ## Angular 1.x的学习
 
 
+
+### AngularJS的特性：依赖注入(DI)、事件循环、指令、控制器、双向绑定、服务、过滤器、MVVM
+
 ### angular指令的理解
 
 #### 一、一个完整的directive  
@@ -12,7 +15,7 @@
 					priority: 0,
 					template: '<div></div>',
 					templateUrl: 'index.html',
-					replace: false,
+					replace: false, 
 					transclude: false,
 					scope: false,
 					restrict: 'A',

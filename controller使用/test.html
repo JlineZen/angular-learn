@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>ngTest Controller使用</title>
+	<!--1.4支持-->
+	<script src="https://code.angularjs.org/1.4.3/angular.min.js"></script>
+</head>
+<body ng-app="com.zzweb">
+	<div ng-controller="MainController as vm">
+		{{vm.name}}
+		<foo-directive name="{{vm.name}}"></foo-directive>
+	</div>
+	<script>
+		angular.module('com.zzweb', []);
+
+		function MainController() {
+			this.name = 'Hello Angular';
+		}
+
+		angular
+			.module('com.zzweb')
+			.controller('MainController', MainController);
+
+		function FooController() {
+			
+		}
+
+		function fooDirective() {
+			function link($scope) {
+				
+			}
+
+			return {
+				restrict: 'E',
+				replace: true,
+				scope: {},
+				controller: FooController,
+				controllerAs: 'vm',
+				bindToController: {
+					name: "@"
+				},
+				template: '<div><input ng-model="vm.name" /></div>',
+				link: link
+			}
+		}
+
+		angular
+			.module('com.zzweb')
+			.directive('fooDirective', fooDirective)
+			.controller('FooController', FooController);
+	</script>
+</body>
+</html>

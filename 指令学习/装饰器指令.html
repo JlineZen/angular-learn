@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>装饰器指令的使用</title>
+</head>
+<body>
+	<script type="text/javascript">
+		var app = angular.module('com.zzweb', []);
+
+		app.config(function($provider) {
+			$provider.decorator('fooDirective', function($delegate) {
+				//保存原有的directive
+				var directive = $delegate[0];
+
+				directive.scope.fn = '&';
+				var link = directive.link; //原有directive的link函数
+				//compile函数 重新返回link函数	
+				directive.compile = function() {
+					return function(scope, element, attrs) {
+						link.apply(this, arguments);
+						//新增的功能
+						element.bind('click', function() {
+							scope.$apply(function() {
+								scope.fn();
+							});
+						});
+					}
+				};
+
+				return $delegate;
+			});
+		});
+	</script>
+</body>
+</html>
