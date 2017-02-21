@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>angular $parse服务</title>
+</head>
+<body ng-app="com.zzweb">
+	<div ng-controller="ParseCtrl as vm">
+		<input type="text" ng-model="vm.value" />
+		<ui-parse ui-test="test value">
+			<p>This is a test</p>
+		</ui-parse>
+	</div>
+	<script type="text/javascript" src="../lib/angular.min.js"></script>
+	<script type="text/javascript">
+		angular.module('com.zzweb', [])
+			.controller('ParseCtrl', ['$parse', '$scope', function($parse, $scope) {
+				var vm = this,
+					obj = {
+						value: 'Hello'
+					},
+					expressFn = 'value + " Angular"',
+					parseFn = $parse(expressFn);
+				vm.value = parseFn(obj);
+			}])
+			.directive('uiParse', ['$parse' ,function($parse) {
+				return {
+					restrict: 'E',
+					replace: true,
+					link: function($element, $attrs, $scope) {
+						var expressFn = $parse($attrs.uiTest);
+						expressFn($scope);
+						console.log($scope.uiTest);
+					}
+				}
+			}]);
+	</script>
+</body>
+</html>

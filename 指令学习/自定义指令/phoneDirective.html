@@ -8,12 +8,12 @@
 <body>
 	<form name="myForm">
 		<label for="phone">电话号码：</label>
-		<input phone-directive ng-model="phone" type="text" id="phone" name="phone" placeholder="Enter phone number..." maxlength="11" required />
+		<input phone-directive ng-model="phone" type="text" id="phone" name="phone" placeholder="Enter phone number..." maxlength="11" required get-resource />
 		<span ng-show="myForm.phone.$error.required">required</span>
 	</form>
 	<script type="text/javascript">
 		angular.module('com.zzweb', [])
-			.directive('phoneDirective', function() {
+			.directive('phoneDirective', ['$http', function($http, $q) {
 				return {
 					require: 'ngModel',
 					restrict: 'A',
@@ -23,10 +23,47 @@
 						}
 					},
 					link: function(scope, element, attrs, ngModelCtrl) {
-						
+						function phoneValidate(value) {
+							if (value) {
+								var number = value.replace(/\D/g, '');
+								if (number != value) {
+									ngModelCtrl.$setViewValue(number);
+									ngModelCtrl.$render();
+								}
+								return number;
+							}
+							return undefined;
+						}
+						ngModelCtrl.$parsers.push(phoneValidate);
+						ngModelCtrl.$asyncValidators.getResource = function(modelValue, viewValue) {
+							var value = modelValue || viewValue;
+							if (value.length == 11 && /[1][34578][0-9]{9}/.test(value)) {
+								return $http.get('./data.json')
+										.then(
+											function(response) {
+												var data = response.data;
+												console.log(data);
+											}, 
+											function() {
+
+											}
+										);
+							} else {
+								return $http.get('./data.json')
+										.then(
+											function(response) {
+												var data = response.data;
+												console.log(data);
+											}, 
+											function() {
+
+											}
+										);
+							}
+						};
 					}
 				}
-			});
+			}]);
 
 		angular.element(document).ready(function() {
 			angular.bootstrap(document, ['com.zzweb']);

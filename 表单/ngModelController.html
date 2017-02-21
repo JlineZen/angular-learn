@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="customController">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../style/bootstrap.css">
+	<script type="text/javascript" src="../lib/angular.min.js"></script>
+	<title>Angular ngModelController学习</title>
+</head>
+<body>
+	<div class="container">
+		<div class="page-header">
+			<h1>ngModelController-<small>创建一个实现了双向数据绑定的可编辑文本区域</small></h1>
+		</div>
+		<form role="form" name="myForm" ng-controller="ctrl">
+			<div class="form-group">
+				<div contenteditable name="myWidget" ng-model="userContent" ng-model-options="{debounce:1000}" class="form-control" required default-text="请输入内容"></div>
+			</div>
+			<div class="form-group">
+				<button type="button" class="btn btn-default btn-primary" ng-click="setNone()">设置为’抱歉，我没有想输入的内容‘</button>
+			</div>
+			<div class="alert alert-danger" role="alert" ng-show="myForm.myWidget.$error.required">
+				<strong>Oh!</strong>必填！
+			</div>
+		</form>
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">用户输入的内容为：</h3>
+			</div>
+			<div class="panel-body">
+				{{userContent}}
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	angular.module('customController', [])
+		.controller('ctrl', function($scope)  {
+			$scope.setNoe = function() {
+				$scope.userContent = '抱歉，我没有想输入的内容';
+			};
+		})
+		.directive('contenteditable', function() {
+			return {
+				restrict: 'A',
+				require: '?ngModel',
+				link: function(scope, element, attr, ngModel) {
+					if (!ngModel) return;
+					console.log(ngModel.$isEmpty(scope.userContent));
+					ngModel.$setViewValue(attr.defaultText);
+					console.log(ngModel.$isEmpty(scope.userContent));
+					ngModel.$render = function() {
+						element.html(ngModel.$viewValue || attr.defaultText);
+					};
+					element.bind('focus', function() {
+						if (element.html() == attr.defaultText) {
+							element.html('');
+						}
+					});
+					element.bind('focus blur keyup change', function() {
+						console.log(scope.userContent);
+						ngModel.$setViewValue(element.html());
+					});
+					ngModel.$parsers.push(function(value) {
+						return value.toUpperCase();
+					});
+				}
+			}
+		});
+</script>
+</html>
